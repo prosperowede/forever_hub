@@ -1,0 +1,396 @@
+/* ==========================================
+   FOREVER HUB ANIMATIONS
+========================================== */
+
+
+/* --------------------------
+   Moving Background
+---------------------------*/
+
+.gradient{
+
+    animation:gradientMove 9s ease-in-out infinite alternate;
+
+}
+
+@keyframes gradientMove{
+
+    0%{
+
+        transform:scale(1);
+
+        filter:hue-rotate(0deg);
+
+    }
+
+    100%{
+
+        transform:scale(1.12);
+
+        filter:hue-rotate(18deg);
+
+    }
+
+}
+
+
+/* --------------------------
+   Blob One
+---------------------------*/
+
+.blob1{
+
+    animation:blobOne 16s ease-in-out infinite;
+
+}
+
+@keyframes blobOne{
+
+    0%{
+
+        transform:translate(0,0);
+
+    }
+
+    25%{
+
+        transform:translate(70px,-50px);
+
+    }
+
+    50%{
+
+        transform:translate(40px,60px);
+
+    }
+
+    75%{
+
+        transform:translate(-40px,20px);
+
+    }
+
+    100%{
+
+        transform:translate(0,0);
+
+    }
+
+}
+
+
+/* --------------------------
+   Blob Two
+---------------------------*/
+
+.blob2{
+
+    animation:blobTwo 20s ease-in-out infinite;
+
+}
+
+@keyframes blobTwo{
+
+    0%{
+
+        transform:translate(0,0);
+
+    }
+
+    30%{
+
+        transform:translate(-80px,-40px);
+
+    }
+
+    60%{
+
+        transform:translate(-30px,50px);
+
+    }
+
+    100%{
+
+        transform:translate(0,0);
+
+    }
+
+}
+
+
+/* --------------------------
+   Blob Three
+---------------------------*/
+
+.blob3{
+
+    animation:blobThree 18s ease-in-out infinite;
+
+}
+
+@keyframes blobThree{
+
+    0%{
+
+        transform:translate(-50%,-50%) scale(1);
+
+    }
+
+    50%{
+
+        transform:translate(-47%,-55%) scale(1.15);
+
+    }
+
+    100%{
+
+        transform:translate(-50%,-50%) scale(1);
+
+    }
+
+}
+
+
+/* --------------------------
+   Stars
+---------------------------*/
+
+.stars{
+
+    animation:starMove 35s linear infinite;
+
+}
+
+@keyframes starMove{
+
+    from{
+
+        transform:translateY(0);
+
+    }
+
+    to{
+
+        transform:translateY(-120px);
+
+    }
+
+}
+
+
+/* --------------------------
+   Welcome
+---------------------------*/
+
+.welcome{
+
+    opacity:0;
+
+    animation:fadeDown .8s ease forwards;
+
+}
+
+@keyframes fadeDown{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-18px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* --------------------------
+   Title
+---------------------------*/
+
+.title{
+
+    opacity:0;
+
+    animation:titleReveal 1s ease .3s forwards;
+
+}
+
+@keyframes titleReveal{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(35px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* --------------------------
+   Paragraph
+---------------------------*/
+
+.subtitle{
+
+    opacity:0;
+
+    animation:fadeText 1s ease .7s forwards;
+
+}
+
+@keyframes fadeText{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* --------------------------
+   Button
+---------------------------*/
+
+.explore-btn{
+
+    opacity:0;
+
+    overflow:hidden;
+
+    position:relative;
+
+    animation:buttonReveal .9s ease 1s forwards;
+
+}
+
+@keyframes buttonReveal{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* Premium Shine */
+
+.explore-btn::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:-130%;
+
+    top:0;
+
+    width:70%;
+
+    height:100%;
+
+    background:linear-gradient(
+
+        90deg,
+
+        transparent,
+
+        rgba(255,255,255,.45),
+
+        transparent
+
+    );
+
+    transform:skewX(-25deg);
+
+    animation:shine 4s infinite;
+
+}
+
+@keyframes shine{
+
+    0%{
+
+        left:-130%;
+
+    }
+
+    45%{
+
+        left:150%;
+
+    }
+
+    100%{
+
+        left:150%;
+
+    }
+
+}
+
+
+/* Soft Floating */
+
+.hero{
+
+    animation:heroFloat 7s ease-in-out infinite;
+
+}
+
+@keyframes heroFloat{
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-6px);
+
+    }
+
+}

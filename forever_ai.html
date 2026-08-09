@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Forever AI</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Forever AI CSS -->
+    <link rel="stylesheet" href="forever_ai.css">
+</head>
+
+
+<body>
+
+    <!-- ========================================
+         FOREVER AI APPLICATION
+    ========================================= -->
+
+    <div class="ai-app">
+
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Logo -->
+            <div class="sidebar-logo">
+
+                <div class="logo-circle">
+                    <span>F</span>
+                </div>
+
+                <div class="logo-text">
+                    <h2>Forever</h2>
+                    <span>AI</span>
+                </div>
+
+            </div>
+
+
+            <!-- New Chat -->
+            <button class="new-chat-btn" id="newChatBtn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <span>New Chat</span>
+
+            </button>
+
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+
+                <p class="nav-title">Workspace</p>
+
+                <button class="nav-item active">
+
+                    <i class="fa-solid fa-message"></i>
+
+                    <span>Chats</span>
+
+                </button>
+
+
+                <button class="nav-item">
+
+                    <i class="fa-solid fa-compass"></i>
+
+                    <span>Explore</span>
+
+                </button>
+
+
+                <button class="nav-item">
+
+                    <i class="fa-solid fa-folder"></i>
+
+                    <span>Projects</span>
+
+                </button>
+
+            </nav>
+
+
+            <!-- Chat History -->
+            <div class="chat-history">
+
+                <p class="nav-title">Recent</p>
+
+
+                <button class="history-item">
+
+                    <i class="fa-regular fa-message"></i>
+
+                    <span>Welcome to Forever AI</span>
+
+                </button>
+
+
+                <button class="history-item">
+
+                    <i class="fa-regular fa-message"></i>
+
+                    <span>My first conversation</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- Sidebar Bottom -->
+            <div class="sidebar-bottom">
+
+                <button class="nav-item">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="user-avatar">
+                        F
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>Forever</strong>
+
+                        <span>Personal AI</span>
+
+                    </div>
+
+                    <i class="fa-solid fa-ellipsis"></i>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+
+        <main class="main-content">
+
+
+            <!-- Top Bar -->
+            <header class="top-bar">
+
+                <button
+                    class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+
+                <div class="current-chat">
+
+                    <div class="mini-logo">
+                        F
+                    </div>
+
+                    <div>
+
+                        <strong>Forever AI</strong>
+
+                        <span>Intelligent Assistant</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="top-actions">
+
+                    <button
+                        class="top-action-btn"
+                        title="New chat"
+                        id="topNewChat"
+                    >
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+
+
+                    <button
+                        class="top-action-btn"
+                        title="More"
+                    >
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </button>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- ========================================
+                 CHAT AREA
+            ========================================= -->
+
+            <section
+                class="chat-container"
+                id="chatContainer"
+            >
+
+
+                <!-- Welcome Screen -->
+                <div
+                    class="welcome-screen"
+                    id="welcomeScreen"
+                >
+
+                    <div class="welcome-logo">
+
+                        <div class="logo-orbit orbit-one"></div>
+
+                        <div class="logo-orbit orbit-two"></div>
+
+                        <div class="welcome-logo-core">
+                            F
+                        </div>
+
+                    </div>
+
+
+                    <h1>
+                        How can I help you?
+                    </h1>
+
+
+                    <p>
+                        Welcome to Forever AI — your intelligent
+                        assistant for ideas, learning, coding and more.
+                    </p>
+
+
+                    <!-- Suggestion Cards -->
+                    <div class="suggestion-grid">
+
+
+                        <button class="suggestion-card">
+
+                            <i class="fa-solid fa-code"></i>
+
+                            <div>
+                                <strong>Help me code</strong>
+
+                                <span>
+                                    Build and understand projects
+                                </span>
+                            </div>
+
+                        </button>
+
+
+                        <button class="suggestion-card">
+
+                            <i class="fa-solid fa-lightbulb"></i>
+
+                            <div>
+                                <strong>Give me an idea</strong>
+
+                                <span>
+                                    Explore creative possibilities
+                                </span>
+                            </div>
+
+                        </button>
+
+
+                        <button class="suggestion-card">
+
+                            <i class="fa-solid fa-graduation-cap"></i>
+
+                            <div>
+                                <strong>Help me learn</strong>
+
+                                <span>
+                                    Explain difficult topics
+                                </span>
+                            </div>
+
+                        </button>
+
+
+                        <button class="suggestion-card">
+
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                            <div>
+                                <strong>Create something</strong>
+
+                                <span>
+                                    Turn your ideas into reality
+                                </span>
+                            </div>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ========================================
+                     MESSAGES
+                ========================================= -->
+
+                <div
+                    class="messages"
+                    id="messages"
+                >
+
+
+                    <!-- Example AI Message -->
+                    <article class="message ai-message">
+
+                        <div class="message-avatar ai-avatar">
+                            F
+                        </div>
+
+
+                        <div class="message-body">
+
+                            <div class="message-header">
+
+                                <strong>Forever AI</strong>
+
+                                <span>AI</span>
+
+                            </div>
+
+
+                            <div class="message-text">
+
+                                <p>
+                                    Hello! I'm Forever AI.
+                                    What would you like to work on today?
+                                </p>
+
+                            </div>
+
+
+                            <div class="message-actions">
+
+                                <button title="Copy">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+
+                                <button title="Good response">
+                                    <i class="fa-regular fa-thumbs-up"></i>
+                                </button>
+
+                                <button title="Bad response">
+                                    <i class="fa-regular fa-thumbs-down"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- Example User Message -->
+                    <article class="message user-message">
+
+                        <div class="message-avatar user-avatar">
+                            F
+                        </div>
+
+
+                        <div class="message-body">
+
+                            <div class="message-header">
+
+                                <strong>You</strong>
+
+                            </div>
+
+
+                            <div class="message-text">
+
+                                <p>
+                                    Tell me what you can help me with.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- ========================================
+                         AI THINKING / LOADING
+                    ========================================= -->
+
+                    <div
+                        class="ai-thinking"
+                        id="aiThinking"
+                    >
+
+                        <div class="thinking-orb">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+
+                        <div class="thinking-text">
+
+                            <strong>Forever AI</strong>
+
+                            <span>is thinking...</span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================================
+                 MESSAGE COMPOSER
+            ========================================= -->
+
+            <div class="composer-wrapper">
+
+                <div class="composer">
+
+
+                    <!-- Attachment -->
+                    <button
+                        class="composer-btn"
+                        title="Attach"
+                    >
+
+                        <i class="fa-solid fa-paperclip"></i>
+
+                    </button>
+
+
+                    <!-- Text Input -->
+                    <textarea
+                        id="messageInput"
+                        placeholder="Message Forever AI..."
+                        rows="1"
+                    ></textarea>
+
+
+                    <!-- Emoji -->
+                    <button
+                        class="composer-btn optional-btn"
+                        title="Emoji"
+                    >
+
+                        <i class="fa-regular fa-face-smile"></i>
+
+                    </button>
+
+
+                    <!-- Send -->
+                    <button
+                        class="send-btn"
+                        id="sendButton"
+                        title="Send message"
+                    >
+
+                        <i class="fa-solid fa-arrow-up"></i>
+
+                    </button>
+
+                </div>
+
+
+                <p class="composer-note">
+                    Forever AI can make mistakes. Check important information.
+                </p>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- Overlay for Mobile Sidebar -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+
+    <!-- ========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script src="forever_ai.js"></script>
+
+</body>
+
+</html>
