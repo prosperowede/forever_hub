@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // SEND MESSAGE
 // =====================================================
 
-function sendMessage() {
+async function sendMessage() {
 
     const message = messageInput.value.trim();
 
@@ -74,19 +74,37 @@ function sendMessage() {
     showThinking();
 
 
-    // Temporary AI response
-    // This will be replaced with the real API later.
-    setTimeout(() => {
+    // updated AI response api now available
+    try {
 
-        hideThinking();
+    const response = await fetch("/.netlify/functions/gemini", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: message
+        })
+    });
 
-        addAIMessage(
-            "I'm ready to help! Soon, I'll be connected to my AI brain so I can give you real answers."
-        );
+    const data = await response.json();
 
-        scrollToBottom();
+    hideThinking();
 
-    }, 1800);
+    addAIMessage(data.reply);
+
+    scrollToBottom();
+
+} catch (error) {
+
+    hideThinking();
+
+    addAIMessage(
+        "Sorry, I couldn't connect to Forever AI."
+    );
+
+    console.error(error);
+
 }
 
 
