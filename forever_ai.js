@@ -44,69 +44,61 @@ async function sendMessage() {
 
     const message = messageInput.value.trim();
 
-    // Don't send empty messages
-    if (!message) {
-        return;
-    }
-
+    if (!message) return;
 
     // Hide welcome screen
     welcomeScreen.style.display = "none";
 
-
-    // Add user message
+    // Show user message
     addUserMessage(message);
-
 
     // Clear input
     messageInput.value = "";
 
-
-    // Reset textarea height
     messageInput.style.height = "auto";
 
-
-    // Scroll to bottom
     scrollToBottom();
 
-
-    // Show AI thinking animation
+    // Show thinking animation
     showThinking();
 
-
-    // updated AI response api now available
     try {
 
-    const response = await fetch("/.netlify/functions/gemini", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: message
-        })
-    });
+        const response = await fetch("/.netlify/functions/gemini", {
 
-    const data = await response.json();
+            method: "POST",
 
-    hideThinking();
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-    addAIMessage(data.reply);
+            body: JSON.stringify({
+                message: message
+            })
 
-    scrollToBottom();
+        });
 
-} catch (error) {
+        const data = await response.json();
 
-    hideThinking();
+        hideThinking();
 
-    addAIMessage(
-        "Sorry, I couldn't connect to Forever AI."
-    );
+        addAIMessage(data.reply);
 
-    console.error(error);
+        scrollToBottom();
+
+    } catch (error) {
+
+        hideThinking();
+
+        addAIMessage(
+            "Sorry, I couldn't connect to Forever AI."
+        );
+
+        console.error(error);
+
+    }
 
 }
-
 
 // =====================================================
 // USER MESSAGE
@@ -118,13 +110,11 @@ function addUserMessage(text) {
 
     article.className = "message user-message";
 
-
     article.innerHTML = `
 
         <div class="message-avatar user-avatar">
             F
         </div>
-
 
         <div class="message-body">
 
@@ -133,7 +123,6 @@ function addUserMessage(text) {
                 <strong>You</strong>
 
             </div>
-
 
             <div class="message-text">
 
@@ -145,8 +134,8 @@ function addUserMessage(text) {
 
     `;
 
-
     messages.appendChild(article);
+
 }
 
 
@@ -160,13 +149,11 @@ function addAIMessage(text) {
 
     article.className = "message ai-message";
 
-
     article.innerHTML = `
 
         <div class="message-avatar ai-avatar">
             F
         </div>
-
 
         <div class="message-body">
 
@@ -178,13 +165,11 @@ function addAIMessage(text) {
 
             </div>
 
-
             <div class="message-text">
 
                 <p>${escapeHTML(text)}</p>
 
             </div>
-
 
             <div class="message-actions">
 
@@ -195,18 +180,12 @@ function addAIMessage(text) {
                     <i class="fa-regular fa-copy"></i>
                 </button>
 
-
                 <button title="Good response">
-
                     <i class="fa-regular fa-thumbs-up"></i>
-
                 </button>
 
-
                 <button title="Bad response">
-
                     <i class="fa-regular fa-thumbs-down"></i>
-
                 </button>
 
             </div>
@@ -215,13 +194,9 @@ function addAIMessage(text) {
 
     `;
 
-
     messages.appendChild(article);
 
-
-    // Activate copy button
     const copyButton = article.querySelector(".copy-btn");
-
 
     copyButton.addEventListener("click", () => {
 
@@ -229,7 +204,6 @@ function addAIMessage(text) {
 
         copyButton.innerHTML =
             '<i class="fa-solid fa-check"></i>';
-
 
         setTimeout(() => {
 
@@ -254,7 +228,6 @@ function showThinking() {
     scrollToBottom();
 
 }
-
 
 function hideThinking() {
 
@@ -283,7 +256,6 @@ function scrollToBottom() {
 
 }
 
-
 // =====================================================
 // SEND BUTTON
 // =====================================================
@@ -301,10 +273,7 @@ sendButton.addEventListener("click", () => {
 
 messageInput.addEventListener("keydown", (event) => {
 
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
+    if (event.key === "Enter" && !event.shiftKey) {
 
         event.preventDefault();
 
@@ -325,7 +294,6 @@ messageInput.addEventListener("input", () => {
 
 });
 
-
 function autoResizeTextarea() {
 
     messageInput.style.height = "auto";
@@ -342,25 +310,16 @@ function autoResizeTextarea() {
 
 function startNewChat() {
 
-    // Remove all generated messages
     messages.innerHTML = "";
 
-
-    // Show welcome screen
     welcomeScreen.style.display = "flex";
 
-
-    // Make sure thinking animation is hidden
     hideThinking();
 
-
-    // Clear input
     messageInput.value = "";
 
     messageInput.style.height = "auto";
 
-
-    // Scroll to top
     chatContainer.scrollTo({
 
         top: 0,
@@ -371,21 +330,9 @@ function startNewChat() {
 
 }
 
+newChatBtn.addEventListener("click", startNewChat);
 
-// Sidebar new chat
-newChatBtn.addEventListener("click", () => {
-
-    startNewChat();
-
-});
-
-
-// Top new chat
-topNewChat.addEventListener("click", () => {
-
-    startNewChat();
-
-});
+topNewChat.addEventListener("click", startNewChat);
 
 
 // =====================================================
@@ -395,7 +342,6 @@ topNewChat.addEventListener("click", () => {
 const suggestionCards =
     document.querySelectorAll(".suggestion-card");
 
-
 suggestionCards.forEach(card => {
 
     card.addEventListener("click", () => {
@@ -403,33 +349,26 @@ suggestionCards.forEach(card => {
         const title =
             card.querySelector("strong").textContent;
 
-
-        const descriptions = {
+        const prompts = {
 
             "Help me code":
                 "Help me build a coding project.",
 
             "Give me an idea":
-                "Give me a creative idea for a new project.",
+                "Give me a creative project idea.",
 
             "Help me learn":
-                "Help me understand something I'm learning.",
+                "Teach me something new.",
 
             "Create something":
-                "Help me create something amazing."
+                "Create something amazing."
 
         };
 
-
-        const prompt =
-            descriptions[title] || title;
-
-
-        messageInput.value = prompt;
-
+        messageInput.value =
+            prompts[title] || title;
 
         autoResizeTextarea();
-
 
         messageInput.focus();
 
@@ -450,13 +389,7 @@ mobileMenuBtn.addEventListener("click", () => {
 
 });
 
-
-sidebarOverlay.addEventListener("click", () => {
-
-    closeSidebar();
-
-});
-
+sidebarOverlay.addEventListener("click", closeSidebar);
 
 function closeSidebar() {
 
@@ -468,14 +401,11 @@ function closeSidebar() {
 
 
 // =====================================================
-// CLOSE SIDEBAR AFTER SELECTING AN ITEM
+// CLOSE SIDEBAR ON MOBILE
 // =====================================================
 
 const sidebarItems =
-    document.querySelectorAll(
-        ".nav-item, .history-item"
-    );
-
+    document.querySelectorAll(".nav-item, .history-item");
 
 sidebarItems.forEach(item => {
 
@@ -505,3 +435,4 @@ function escapeHTML(text) {
     return div.innerHTML;
 
 }
+
