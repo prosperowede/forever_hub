@@ -1,6 +1,13 @@
 // =====================================================
 // FOREVER AI — JAVASCRIPT
 // =====================================================
+// API CONFIG
+// =====================================================
+const API_KEY = "AQ.Ab8RN6JicKF8XEvSysdCaFPEAI2bTdEZwTH0Xe4kmQUYf_oIHQ";
+
+const API_URL =
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
+
 
 
 // =====================================================
@@ -46,34 +53,52 @@ async function sendMessage() {
 
     if (!message) return;
 
-    // Hide welcome screen
     welcomeScreen.style.display = "none";
 
-    // Show user message
     addUserMessage(message);
 
-    // Clear input
     messageInput.value = "";
 
     messageInput.style.height = "auto";
 
     scrollToBottom();
 
-    // Show thinking animation
     showThinking();
 
     try {
 
-        const response = await fetch("/.netlify/functions/gemini", {
+        const response = await fetch(API_URL, {
 
             method: "POST",
 
             headers: {
-                "Content-Type": "application/json"
+
+                "Content-Type": "application/json",
+
+                "X-goog-api-key": API_KEY
+
             },
 
             body: JSON.stringify({
-                message: message
+
+                contents: [
+
+                    {
+
+                        parts: [
+
+                            {
+
+                                text: message
+
+                            }
+
+                        ]
+
+                    }
+
+                ]
+
             })
 
         });
@@ -82,7 +107,25 @@ async function sendMessage() {
 
         hideThinking();
 
-        addAIMessage(data.reply);
+        if (!response.ok) {
+
+            throw new Error(
+
+                data.error?.message ||
+
+                "API Error"
+
+            );
+
+        }
+
+        const reply =
+
+            data.candidates?.[0]?.content?.parts?.[0]?.text ||
+
+            "Sorry, I couldn't generate a response.";
+
+        addAIMessage(reply);
 
         scrollToBottom();
 
@@ -90,19 +133,14 @@ async function sendMessage() {
 
         hideThinking();
 
-        addAIMessage(
-            "Sorry, I couldn't connect to Forever AI."
-        );
-
         console.error(error);
+
+        addAIMessage(error.message);
 
     }
 
 }
 
-// =====================================================
-// USER MESSAGE
-// =====================================================
 
 function addUserMessage(text) {
 
@@ -435,4 +473,3 @@ function escapeHTML(text) {
     return div.innerHTML;
 
 }
-
