@@ -71,92 +71,14 @@ Online
 
 <input
 type="text"
+id="appSearch"
 placeholder="Search apps...">
 
 </div>
 
-<!-- FOREVER AI -->
-
-<section class="app-card">
-<div class="app-icon ai-logo">
-    <img src="forever_ai.png" alt="Forever AI Logo">
-</div>
-
-<div class="app-content">
-
-<h2>FOREVER AI</h2>
-
-<p>
-Your intelligent assistant for writing,
-coding, learning and much more.
-</p>
-
-<a href="forever_ai.html">
-
-Open App
-
-</a>
-
-</div>
-
-</section>
-
-<!-- WEATHER -->
-
-<section class="app-card">
-
-<div class="app-icon ai-logo">
-    <img src="weather1.jpg" alt="Forever weather Logo">
-</div>
-
-<div class="app-content">
-
-<h2>FOREVER WEATHER</h2>
-
-<p>
-Get live weather forecasts
-for any city in the world.
-</p>
-
-<a href="weather.html">
-
-Open App
-
-</a>
-
-</div>
-
-</section>
-
-<!-- SHOP -->
-
-<section class="app-card">
-<div class="app-icon ai-logo">
-    <img src="shopping.jpg" alt="Forever shopping Logo">
-</div>
-
-<div class="app-content">
-
-<h2>FOREVER SHOP</h2>
-
-<p>
-Browse amazing products
-with a modern shopping experience.
-</p>
-
-<a href="shop.html">
-
-Open App
-
-</a>
-
-</div>
-
-</section>
-
 <!-- ABOUT -->
 
-<section class="app-card">
+<section class="app-card" data-name="about me portfolio">
 
 <div class="app-icon profile">
 
@@ -184,6 +106,90 @@ View Portfolio
 </div>
 
 </section>
+
+<!-- FOREVER AI -->
+
+<section class="app-card" data-name="forever ai assistant chat">
+<div class="app-icon ai-logo">
+    <img src="forever_ai.png" alt="Forever AI Logo">
+</div>
+
+<div class="app-content">
+
+<h2>FOREVER AI</h2>
+
+<p>
+Your intelligent assistant for writing,
+coding, learning and much more.
+</p>
+
+<a href="forever_ai.html">
+
+Open App
+
+</a>
+
+</div>
+
+</section>
+
+<!-- WEATHER -->
+
+<section class="app-card" data-name="forever weather forecast">
+
+<div class="app-icon ai-logo">
+    <img src="weather1.jpg" alt="Forever weather Logo">
+</div>
+
+<div class="app-content">
+
+<h2>FOREVER WEATHER</h2>
+
+<p>
+Get live weather forecasts
+for any city in the world.
+</p>
+
+<a href="weather.html">
+
+Open App
+
+</a>
+
+</div>
+
+</section>
+
+<!-- SHOP -->
+
+<section class="app-card" data-name="forever shop shopping store">
+<div class="app-icon ai-logo">
+    <img src="shopping.jpg" alt="Forever shopping Logo">
+</div>
+
+<div class="app-content">
+
+<h2>FOREVER SHOP</h2>
+
+<p>
+Browse amazing products
+with a modern shopping experience.
+</p>
+
+<a href="shop.html">
+
+Open App
+
+</a>
+
+</div>
+
+</section>
+
+<!-- No results message -->
+<p id="noResults" class="no-results" style="display:none;">
+No apps match your search.
+</p>
 
 <!-- CONTACT -->
 
@@ -227,6 +233,8 @@ Contact Form
 <a href="https://wa.me/2348117090361" class="whatsapp-btn" target="_blank">
   <i class="fab fa-whatsapp"></i>
 </a>
+
+<script src="dashboard.js"></script>
 
 </body>
 
