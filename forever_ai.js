@@ -1,14 +1,15 @@
 // =====================================================
 // FOREVER AI — JAVASCRIPT
+// ======================================
+
 // =====================================================
-// API CONFIG
+// FOREVER AI — API CONFIG
 // =====================================================
-const API_KEY = "AQ.Ab8RN6JicKF8XEvSysdCaFPEAI2bTdEZwTH0Xe4kmQUYf_oIHQ";
+
+const API_KEY = "AQ.Ab8RN6LdkPdpyHBFWV67UMD1icJi3PT5J5gMZN1s0sUBv3kNyA";
 
 const API_URL =
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
-
-
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent";
 
 // =====================================================
 // ELEMENTS
