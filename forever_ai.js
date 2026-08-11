@@ -6,10 +6,10 @@
 // FOREVER AI — API CONFIG
 // =====================================================
 
-const API_KEY = "AQ.Ab8RN6LdkPdpyHBFWV67UMD1icJi3PT5J5gMZN1s0sUBv3kNyA";
+const API_KEY = "AQ.Ab8RN6KrPTqGkM9RgXeikZ1PRPp8SNJH1oHPvZbmhLf2IDqjvQ";
 
 const API_URL =
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent";
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
 
 // =====================================================
 // ELEMENTS
@@ -110,19 +110,52 @@ async function sendMessage() {
 
         if (!response.ok) {
 
+            // Log the real error for debugging, but never show
+            // Google's raw error payload as if it were a chat reply.
+            console.error("Gemini API error:", data);
+
+            if (response.status === 429) {
+
+                throw new Error(
+                    "RATE_LIMIT"
+                );
+
+            }
+
+            if (response.status === 401 || response.status === 403) {
+
+                throw new Error(
+                    "AUTH"
+                );
+            }
+
             throw new Error(
-
-                data.error?.message ||
-
-                "API Error"
-
+                "GENERIC"
             );
+
+        }
+
+        // Check for a safety block or empty candidate list, which
+        // also isn't a normal error status but still isn't a real reply.
+        const candidate = data.candidates?.[0];
+
+        if (!candidate || candidate.finishReason === "SAFETY") {
+
+            console.error("Gemini API returned no usable candidate:", data);
+
+            addAIMessage(
+                "I couldn't generate a response to that. Try rephrasing your message."
+            );
+
+            scrollToBottom();
+
+            return;
 
         }
 
         const reply =
 
-            data.candidates?.[0]?.content?.parts?.[0]?.text ||
+            candidate.content?.parts?.[0]?.text ||
 
             "Sorry, I couldn't generate a response.";
 
@@ -136,7 +169,33 @@ async function sendMessage() {
 
         console.error(error);
 
-        addAIMessage(error.message);
+        addAIMessage(getFriendlyErrorMessage(error.message));
+
+    }
+
+}
+
+
+// =====================================================
+// FRIENDLY ERROR MESSAGES
+// =====================================================
+
+function getFriendlyErrorMessage(code) {
+
+    switch (code) {
+
+        case "RATE_LIMIT":
+            return "I'm getting too many requests right now (API rate limit reached). Please wait a moment and try again.";
+
+        case "AUTH":
+            return "There's a problem with the API key for Forever AI — it may be invalid or expired. Please check the key.";
+
+        case "GENERIC":
+            return "Something went wrong reaching Forever AI's servers. Please try again in a moment.";
+
+        default:
+            // Network failure (fetch itself threw, e.g. offline).
+            return "I couldn't connect right now. Please check your connection and try again.";
 
     }
 
@@ -150,10 +209,6 @@ function addUserMessage(text) {
     article.className = "message user-message";
 
     article.innerHTML = `
-
-        <div class="message-avatar user-avatar">
-            F
-        </div>
 
         <div class="message-body">
 
@@ -191,7 +246,7 @@ function addAIMessage(text) {
     article.innerHTML = `
 
         <div class="message-avatar ai-avatar">
-            F
+            <img src="forever_ai_icon.png" alt="Forever AI">
         </div>
 
         <div class="message-body">
