@@ -1476,17 +1476,24 @@ body {
 }
 
 
-.composer-note {
-    padding-top: 8px;
-   padding-buttom: 30px;
-
-    color: var(--text-muted);
-
-    font-size: 9px;
-
-    text-align: center;
+/* Move composer up from the viewport bottom (and respect safe areas) */
+:root {
+  --composer-height: 72px; /* set this to your composer height */
+  --composer-gap: 30px;    /* desired gap from bottom */
 }
 
+.composer-note {
+  position: fixed; /* or absolute if inside a positioned parent */
+  left: 0;
+  right: 0;
+  bottom: calc(var(--composer-gap) + env(safe-area-inset-bottom));
+  z-index: 40;
+
+  /* keep visual spacing inside the composer if needed */
+  padding: 12px 16px;
+  margin: 0 auto;
+  max-width: 900px; /* optional */
+   }
 
 /* =====================================================
    SIDEBAR OVERLAY
