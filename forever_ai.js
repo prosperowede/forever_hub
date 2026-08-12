@@ -6,10 +6,12 @@
 // FOREVER AI — API CONFIG
 // =====================================================
 
-const API_KEY = "AQ.Ab8RN6KrPTqGkM9RgXeikZ1PRPp8SNJH1oHPvZbmhLf2IDqjvQ";
+const API_KEY = "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";
 
 const API_URL =
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
+"https://api.groq.com/openai/v1/chat/completions";
+
+const MODEL = "llama-3.3-70b-versatile";
 
 // =====================================================
 // ELEMENTS
@@ -66,6 +68,10 @@ async function sendMessage() {
 
     showThinking();
 
+    let aiMessageEl = null;
+
+    let buffer = "";
+
     try {
 
         const response = await fetch(API_URL, {
@@ -76,25 +82,23 @@ async function sendMessage() {
 
                 "Content-Type": "application/json",
 
-                "X-goog-api-key": API_KEY
+                "Authorization": `Bearer ${API_KEY}`
 
             },
 
             body: JSON.stringify({
 
-                contents: [
+                model: MODEL,
+
+                stream: true,
+
+                messages: [
 
                     {
 
-                        parts: [
+                        role: "user",
 
-                            {
-
-                                text: message
-
-                            }
-
-                        ]
+                        content: message
 
                     }
 
@@ -104,15 +108,15 @@ async function sendMessage() {
 
         });
 
-        const data = await response.json();
-
-        hideThinking();
-
         if (!response.ok) {
 
+            const data = await response.json().catch(() => ({}));
+
+            hideThinking();
+
             // Log the real error for debugging, but never show
-            // Google's raw error payload as if it were a chat reply.
-            console.error("Gemini API error:", data);
+            // Groq's raw error payload as if it were a chat reply.
+            console.error("Groq API error:", data);
 
             if (response.status === 429) {
 
@@ -135,13 +139,69 @@ async function sendMessage() {
 
         }
 
-        // Check for a safety block or empty candidate list, which
-        // also isn't a normal error status but still isn't a real reply.
-        const candidate = data.candidates?.[0];
+        // ---------------------------------------------------
+        // Read the SSE stream and reveal text as it arrives,
+        // the way a real AI chat app does.
+        // ---------------------------------------------------
 
-        if (!candidate || candidate.finishReason === "SAFETY") {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-            console.error("Gemini API returned no usable candidate:", data);
+        let sseBuffer = "";
+
+        while (true) {
+
+            const { value, done } = await reader.read();
+
+            if (done) break;
+
+            sseBuffer += decoder.decode(value, { stream: true });
+
+            const lines = sseBuffer.split("\n");
+
+            // Keep the last (possibly incomplete) line for the next chunk.
+            sseBuffer = lines.pop();
+
+            for (const line of lines) {
+
+                const trimmed = line.trim();
+
+                if (!trimmed.startsWith("data:")) continue;
+
+                const payload = trimmed.slice(5).trim();
+
+                if (payload === "[DONE]") continue;
+
+                let json;
+
+                try {
+                    json = JSON.parse(payload);
+                } catch {
+                    continue;
+                }
+
+                const delta = json.choices?.[0]?.delta?.content;
+
+                if (!delta) continue;
+
+                if (!aiMessageEl) {
+                    hideThinking();
+                    aiMessageEl = createAIMessageShell();
+                }
+
+                buffer += delta;
+
+                updateAIMessageContent(aiMessageEl, buffer, true);
+
+                scrollToBottom();
+
+            }
+
+        }
+
+        hideThinking();
+
+        if (!aiMessageEl) {
 
             addAIMessage(
                 "I couldn't generate a response to that. Try rephrasing your message."
@@ -153,13 +213,7 @@ async function sendMessage() {
 
         }
 
-        const reply =
-
-            candidate.content?.parts?.[0]?.text ||
-
-            "Sorry, I couldn't generate a response.";
-
-        addAIMessage(reply);
+        finalizeAIMessage(aiMessageEl, buffer);
 
         scrollToBottom();
 
@@ -237,7 +291,7 @@ function addUserMessage(text) {
 // AI MESSAGE
 // =====================================================
 
-function addAIMessage(text) {
+function createAIMessageShell() {
 
     const article = document.createElement("article");
 
@@ -259,30 +313,7 @@ function addAIMessage(text) {
 
             </div>
 
-            <div class="message-text">
-
-                <p>${escapeHTML(text)}</p>
-
-            </div>
-
-            <div class="message-actions">
-
-                <button
-                    title="Copy"
-                    class="copy-btn"
-                >
-                    <i class="fa-regular fa-copy"></i>
-                </button>
-
-                <button title="Good response">
-                    <i class="fa-regular fa-thumbs-up"></i>
-                </button>
-
-                <button title="Bad response">
-                    <i class="fa-regular fa-thumbs-down"></i>
-                </button>
-
-            </div>
+            <div class="message-text"></div>
 
         </div>
 
@@ -290,7 +321,58 @@ function addAIMessage(text) {
 
     messages.appendChild(article);
 
-    const copyButton = article.querySelector(".copy-btn");
+    return article;
+
+}
+
+
+function updateAIMessageContent(article, text, streaming) {
+
+    const textEl = article.querySelector(".message-text");
+
+    let html = renderMarkdown(text);
+
+    if (streaming) {
+        html += '<span class="cursor-blink"></span>';
+    }
+
+    textEl.innerHTML = html;
+
+}
+
+
+function finalizeAIMessage(article, text) {
+
+    updateAIMessageContent(article, text, false);
+
+    const body = article.querySelector(".message-body");
+
+    const actions = document.createElement("div");
+
+    actions.className = "message-actions";
+
+    actions.innerHTML = `
+
+        <button
+            title="Copy"
+            class="copy-btn"
+        >
+            <i class="fa-regular fa-copy"></i>
+        </button>
+
+        <button title="Good response">
+            <i class="fa-regular fa-thumbs-up"></i>
+        </button>
+
+        <button title="Bad response">
+            <i class="fa-regular fa-thumbs-down"></i>
+        </button>
+
+    `;
+
+    body.appendChild(actions);
+
+    const copyButton = actions.querySelector(".copy-btn");
 
     copyButton.addEventListener("click", () => {
 
@@ -307,6 +389,49 @@ function addAIMessage(text) {
         }, 1500);
 
     });
+
+}
+
+
+function addAIMessage(text) {
+
+    const article = createAIMessageShell();
+
+    finalizeAIMessage(article, text);
+
+}
+
+
+// =====================================================
+// MARKDOWN RENDERING (safe)
+// =====================================================
+
+function renderMarkdown(text) {
+
+    if (typeof marked === "undefined" || typeof DOMPurify === "undefined") {
+        // Fallback if the CDN scripts failed to load — never show
+        // raw, unescaped text.
+        return `<p>${escapeHTML(text)}</p>`;
+    }
+
+    const rawHTML = marked.parse(text, {
+        breaks: true
+    });
+
+    const clean = DOMPurify.sanitize(rawHTML, {
+        ADD_ATTR: ["target", "rel"]
+    });
+
+    // Force all links to open safely in a new tab.
+    const container = document.createElement("div");
+    container.innerHTML = clean;
+
+    container.querySelectorAll("a").forEach(link => {
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
+    });
+
+    return container.innerHTML;
 
 }
 
