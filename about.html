@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Forever Hub | About</title>
+
+<link rel="stylesheet" href="about.css">
+<link rel="stylesheet" href="css_responsive.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<canvas id="galaxy"></canvas>
+
+<div class="background">
+    <div class="gradient"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+</div>
+
+<!-- ============================
+     NAV BAR
+============================ -->
+
+<nav class="navbar" id="navbar">
+
+    <a href="index.html" class="nav-brand">
+        <div class="nav-logo">
+            <img src="forever_ai_icon.png" alt="Forever Hub">
+        </div>
+        <span>Forever Hub</span>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="#about" class="nav-link" data-section="about">About</a>
+        <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+        <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+        <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- ============================
+     HERO
+============================ -->
+
+<header class="hero" id="home">
+
+    <div class="hero-photo">
+        <img src="forever_.png" alt="Profile photo">
+    </div>
+
+    <small class="eyebrow">Welcome to my corner of Forever Hub</small>
+
+    <h1 class="hero-name">Hi, I'm <span>the builder</span> behind Forever Hub</h1>
+
+    <p class="hero-role">
+        <span id="roleText">Building Forever AI</span><span class="cursor">|</span>
+    </p>
+
+    <p class="hero-intro">
+        I design and build small, focused digital tools — an AI assistant, a weather app,
+        a shop, and the hub that ties them all together. I care about interfaces that feel
+        considered, not just functional.
+    </p>
+
+    <div class="hero-actions">
+        <a href="#projects" class="btn-primary">
+            View Projects
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="#contact" class="btn-secondary">
+            Get In Touch
+        </a>
+    </div>
+
+</header>
+
+<main>
+
+    <!-- ============================
+         ABOUT
+    ============================ -->
+
+    <section class="section" id="about">
+
+        <div class="section-head">
+            <small class="section-eyebrow">About</small>
+            <h2 class="section-title">A bit about me</h2>
+        </div>
+
+        <div class="about-grid">
+
+            <div class="about-photo">
+                <img src="forever_.png" alt="Profile photo">
+            </div>
+
+            <div class="about-text">
+
+                <p>
+                    I'm a self-taught developer who likes building complete little worlds
+                    rather than one-off projects — which is how Forever Hub came together.
+                    It started as a single landing page and grew into an ecosystem: an AI
+                    assistant, a live weather app, a shopping experience, and this portfolio,
+                    all sharing one visual language.
+                </p>
+
+                <p>
+                    I work mostly in HTML, CSS, and JavaScript, with a growing interest in
+                    wiring real APIs into front-end projects — the kind of detail that turns
+                    a static page into something that actually does things. I care a lot about
+                    the small stuff: whether a button feels right to press, whether a layout
+                    holds up on a cracked phone screen, whether an error message actually helps
+                    instead of just existing.
+                </p>
+
+                <p>
+                    Outside of code, I'm the person who'll rebuild something three times because
+                    the spacing was "almost" right. Forever Hub is very much a living project —
+                    what you're looking at right now is one part of it.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============================
+         SKILLS
+    ============================ -->
+
+    <section class="section" id="skills">
+
+        <div class="section-head">
+            <small class="section-eyebrow">Skills</small>
+            <h2 class="section-title">What I work with</h2>
+        </div>
+
+        <div class="skills-groups">
+
+            <div class="skill-group">
+
+                <h3>Core</h3>
+
+                <div class="skill-tags">
+                    <span class="skill-tag">HTML5</span>
+                    <span class="skill-tag">CSS3</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Responsive Design</span>
+                </div>
+
+            </div>
+
+            <div class="skill-group">
+
+                <h3>Building With</h3>
+
+                <div class="skill-tags">
+                    <span class="skill-tag">REST APIs</span>
+                    <span class="skill-tag">Fetch / Async JS</span>
+                    <span class="skill-tag">DOM Manipulation</span>
+                    <span class="skill-tag">Git &amp; GitHub</span>
+                </div>
+
+            </div>
+
+            <div class="skill-group">
+
+                <h3>Design Sense</h3>
+
+                <div class="skill-tags">
+                    <span class="skill-tag">UI / UX Fundamentals</span>
+                    <span class="skill-tag">Mobile-First Layouts</span>
+                    <span class="skill-tag">Dark-Mode Interfaces</span>
+                    <span class="skill-tag">Design Systems</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============================
+         PROJECTS
+    ============================ -->
+
+    <section class="section" id="projects">
+
+        <div class="section-head">
+            <small class="section-eyebrow">Projects</small>
+            <h2 class="section-title">Things I've built</h2>
+        </div>
+
+        <div class="projects-grid">
+
+            <article class="project-card">
+
+                <div class="project-icon">
+                    <img src="forever_ai_icon.png" alt="Forever AI">
+                </div>
+
+                <h3>Forever AI</h3>
+
+                <p>
+                    A streaming AI chat assistant with a custom interface — real-time
+                    responses, formatted Markdown replies, and a sidebar built for
+                    quick conversation switching.
+                </p>
+
+                <div class="project-tags">
+                    <span>JavaScript</span>
+                    <span>API Integration</span>
+                    <span>Streaming</span>
+                </div>
+
+                <a href="forever_ai.html" class="project-link">
+                    Open App <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+
+            </article>
+
+            <article class="project-card">
+
+                <div class="project-icon weather">
+                    <img src="weather1.jpg" alt="Forever Weather">
+                </div>
+
+                <h3>Forever Weather</h3>
+
+                <p>
+                    A clean, glanceable weather app pulling live forecasts for any city —
+                    built to feel calm and legible rather than cluttered with data.
+                </p>
+
+                <div class="project-tags">
+                    <span>Weather API</span>
+                    <span>UI Design</span>
+                </div>
+
+                <a href="weather.html" class="project-link">
+                    Open App <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+
+            </article>
+
+            <article class="project-card">
+
+                <div class="project-icon shop">
+                    <img src="shopping.jpg" alt="Forever Shop">
+                </div>
+
+                <h3>Forever Shop</h3>
+
+                <p>
+                    A modern storefront concept focused on a smooth browsing experience —
+                    product cards, cart interactions, and a clean checkout flow.
+                </p>
+
+                <div class="project-tags">
+                    <span>E-commerce UI</span>
+                    <span>Interaction Design</span>
+                </div>
+
+                <a href="shop.html" class="project-link">
+                    Open App <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+
+            </article>
+
+            <article class="project-card">
+
+                <div class="project-icon hub">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <h3>Forever Hub</h3>
+
+                <p>
+                    The ecosystem itself — a dashboard tying every project together under
+                    one shared design system, with search, navigation, and this portfolio.
+                </p>
+
+                <div class="project-tags">
+                    <span>Design System</span>
+                    <span>Front-End Architecture</span>
+                </div>
+
+                <a href="dashboard.html" class="project-link">
+                    Open App <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- ============================
+         CONTACT
+    ============================ -->
+
+    <section class="section" id="contact">
+
+        <div class="section-head">
+            <small class="section-eyebrow">Contact</small>
+            <h2 class="section-title">Let's work together</h2>
+        </div>
+
+        <div class="contact-grid">
+
+            <div class="contact-info">
+
+                <p>
+                    Have a project in mind, or just want to say hi? My inbox (and WhatsApp)
+                    are open.
+                </p>
+
+                <a href="https://wa.me/2348117090361" class="whatsapp-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i>
+                    Chat on WhatsApp
+                </a>
+
+            </div>
+
+            <form
+                class="contact-form"
+                id="contactForm"
+                action="https://formspree.io/f/mljrnbwl"
+                method="POST"
+            >
+
+                <div class="form-row">
+
+                    <label for="name">Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Your name"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-row">
+
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-row">
+
+                    <label for="message">Message</label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Tell me about your project..."
+                        required
+                    ></textarea>
+
+                </div>
+
+                <button type="submit" class="btn-primary form-submit" id="formSubmit">
+                    <span class="btn-text">Send Message</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+
+                <p class="form-status" id="formStatus"></p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    © 2026 Forever Hub — Built with care.
+</footer>
+
+<a href="https://wa.me/2348117090361" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="Script.js"></script>
+<script src="about.js"></script>
+
+</body>
+
+</html>
