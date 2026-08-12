@@ -1478,6 +1478,7 @@ body {
 
 .composer-note {
     padding-top: 8px;
+   padding-buttom: 30px;
 
     color: var(--text-muted);
 
