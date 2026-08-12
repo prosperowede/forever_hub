@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Forever Hub | Weather</title>
+
+<link rel="stylesheet" href="weather.css">
+<link rel="stylesheet" href="css_responsive.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="background">
+    <div class="gradient"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+</div>
+
+<!-- ============================
+     HEADER
+============================ -->
+
+<header class="top-bar">
+
+    <a href="dashboard.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="brand">
+        <div class="brand-icon">
+            <img src="weather1.jpg" alt="Forever Weather">
+        </div>
+        <span>Forever Weather</span>
+    </div>
+
+    <button class="locate-btn" id="locateBtn" title="Use my location">
+        <i class="fa-solid fa-location-crosshairs"></i>
+    </button>
+
+</header>
+
+<main>
+
+    <!-- ============================
+         SEARCH
+    ============================ -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="citySearch"
+                placeholder="Search for a city or country..."
+                autocomplete="off"
+            >
+
+            <div class="search-results" id="searchResults"></div>
+
+        </div>
+
+        <div class="quick-cities" id="quickCities">
+            <button data-city="Lagos">Lagos</button>
+            <button data-city="London">London</button>
+            <button data-city="New York">New York</button>
+            <button data-city="Dubai">Dubai</button>
+            <button data-city="Tokyo">Tokyo</button>
+        </div>
+
+    </section>
+
+    <!-- ============================
+         LOADING / ERROR STATES
+    ============================ -->
+
+    <div class="state-message" id="loadingState" style="display:none;">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+        <p>Fetching weather...</p>
+    </div>
+
+    <div class="state-message" id="errorState" style="display:none;">
+        <i class="fa-solid fa-cloud-bolt"></i>
+        <p id="errorText">Couldn't find that location. Try another search.</p>
+    </div>
+
+    <!-- ============================
+         WEATHER CARD
+    ============================ -->
+
+    <section class="weather-card" id="weatherCard" style="display:none;">
+
+        <div class="weather-location">
+
+            <h1 id="cityName">--</h1>
+            <p id="countryName">--</p>
+
+        </div>
+
+        <div class="weather-datetime">
+
+            <span id="localTime">--:--</span>
+            <span class="dot">•</span>
+            <span id="localDate">--</span>
+
+        </div>
+
+        <div class="weather-main">
+
+            <div class="weather-icon" id="weatherIcon">
+                <i class="fa-solid fa-cloud-sun"></i>
+            </div>
+
+            <div class="weather-temp">
+                <span id="tempValue">--</span>
+                <span class="deg">°C</span>
+            </div>
+
+        </div>
+
+        <p class="weather-condition" id="conditionText">--</p>
+        <p class="weather-feelslike">Feels like <span id="feelsLikeValue">--°</span></p>
+
+        <div class="weather-details">
+
+            <div class="detail-card">
+                <i class="fa-solid fa-droplet"></i>
+                <div>
+                    <span class="detail-label">Humidity</span>
+                    <span class="detail-value" id="humidityValue">--%</span>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <i class="fa-solid fa-wind"></i>
+                <div>
+                    <span class="detail-label">Wind</span>
+                    <span class="detail-value" id="windValue">-- km/h</span>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <i class="fa-solid fa-sun" id="dayNightIcon"></i>
+                <div>
+                    <span class="detail-label">Sky</span>
+                    <span class="detail-value" id="dayNightValue">--</span>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <i class="fa-solid fa-mountain-sun"></i>
+                <div>
+                    <span class="detail-label">Elevation</span>
+                    <span class="detail-value" id="elevationValue">-- m</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============================
+         EMPTY STATE (initial)
+    ============================ -->
+
+    <div class="state-message" id="emptyState">
+        <i class="fa-solid fa-cloud-sun"></i>
+        <p>Search a city above to see current weather and local time.</p>
+    </div>
+
+</main>
+
+<script src="weather.js"></script>
+
+</body>
+
+</html>
