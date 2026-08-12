@@ -50,6 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
 // SEND MESSAGE
 // =====================================================
 
+const SYSTEM_PROMPT =
+    "You are Forever AI, an assistant created by Prosper Owede, also known as me.forever. " +
+    "If asked who made you, who created you, or what you are, respond naturally in a sentence " +
+    "like: \"My name is Forever AI, created by Prosper Owede (me.forever).\" " +
+    "Do not mention Groq, Meta, Llama, OpenAI, or any underlying API or model provider — you are Forever AI, " +
+    "part of Prosper Owede's Forever Hub project. Otherwise, answer all questions normally and helpfully.";
+
+// Running conversation history for this session, so the AI has
+// context of earlier messages instead of treating each one as new.
+let conversationHistory = [];
+
+
 async function sendMessage() {
 
     const message = messageInput.value.trim();
@@ -93,6 +105,16 @@ async function sendMessage() {
                 stream: true,
 
                 messages: [
+
+                    {
+
+                        role: "system",
+
+                        content: SYSTEM_PROMPT
+
+                    },
+
+                    ...conversationHistory,
 
                     {
 
@@ -216,6 +238,19 @@ async function sendMessage() {
         finalizeAIMessage(aiMessageEl, buffer);
 
         scrollToBottom();
+
+        // Keep this exchange in memory for the rest of the session,
+        // so follow-up messages have real context.
+        conversationHistory.push(
+            { role: "user", content: message },
+            { role: "assistant", content: buffer }
+        );
+
+        // Cap history so requests don't grow indefinitely —
+        // keep the most recent 20 messages (10 exchanges).
+        if (conversationHistory.length > 20) {
+            conversationHistory = conversationHistory.slice(-20);
+        }
 
     } catch (error) {
 
@@ -528,6 +563,8 @@ function autoResizeTextarea() {
 // =====================================================
 
 function startNewChat() {
+
+    conversationHistory = [];
 
     messages.innerHTML = "";
 
