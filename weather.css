@@ -87,6 +87,8 @@ body {
 
     opacity: .3;
 
+    transition: background 1.8s ease;
+
 }
 
 
@@ -443,6 +445,25 @@ main {
 }
 
 
+.quick-label {
+
+    display: block;
+
+    font-size: 0.72rem;
+
+    color: var(--text-muted);
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-top: 18px;
+
+    margin-bottom: 10px;
+
+}
+
+
 .quick-cities button {
 
     padding: 8px 16px;
@@ -526,6 +547,146 @@ main {
 
 
 /* ===========================
+   EMPTY STATE HERO
+=========================== */
+
+.empty-hero {
+
+    padding: 70px 20px 60px;
+
+}
+
+
+.empty-icon-wrap {
+
+    position: relative;
+
+    width: 120px;
+    height: 120px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+}
+
+
+.empty-icon-main {
+
+    font-size: 56px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent-violet),
+            var(--accent-magenta)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    animation: floatIcon 3.5s ease-in-out infinite;
+
+}
+
+
+.empty-icon-orbit {
+
+    position: absolute;
+
+    font-size: 16px !important;
+
+    color: var(--text-muted) !important;
+
+    opacity: 0.55 !important;
+
+}
+
+
+.orbit1 {
+
+    top: 6px;
+    left: 10px;
+
+    animation: driftOrbit 6s ease-in-out infinite;
+
+}
+
+
+.orbit2 {
+
+    bottom: 10px;
+    right: 4px;
+
+    animation: driftOrbit 7s ease-in-out infinite reverse;
+}
+
+
+.orbit3 {
+
+    top: 14px;
+    right: 12px;
+
+    animation: driftOrbit 5s ease-in-out infinite;
+    animation-delay: 0.8s;
+
+}
+
+
+@keyframes floatIcon {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+}
+
+
+@keyframes driftOrbit {
+
+    0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0.35;
+    }
+
+    50% {
+        transform: translate(6px, -6px);
+        opacity: 0.7;
+    }
+
+}
+
+
+.empty-hero h2 {
+
+    font-size: 1.3rem;
+
+    font-weight: 700;
+
+    color: var(--text-main);
+
+    margin-bottom: 8px;
+
+}
+
+
+.empty-hero p {
+
+    max-width: 320px;
+
+}
+
+
+/* ===========================
    WEATHER CARD
 =========================== */
 
@@ -604,6 +765,8 @@ main {
 
 .weather-icon {
 
+    position: relative;
+
     font-size: 60px;
 
     background:
@@ -617,6 +780,195 @@ main {
     background-clip: text;
 
     color: transparent;
+
+}
+
+
+.weather-icon::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 90px;
+    height: 90px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: radial-gradient(circle, rgba(217, 70, 239, 0.25), transparent 70%);
+
+    animation: iconPulse 3s ease-in-out infinite;
+
+    z-index: -1;
+
+}
+
+
+@keyframes iconPulse {
+
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+}
+
+
+.weather-context {
+
+    font-size: 0.85rem;
+
+    color: var(--text-secondary);
+
+    font-style: italic;
+
+    margin-bottom: 26px;
+
+}
+
+
+/* ===========================
+   HOURLY FORECAST
+=========================== */
+
+.hourly-section {
+
+    margin-top: 22px;
+
+}
+
+
+.hourly-title {
+
+    font-size: 0.78rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    color: var(--text-muted);
+
+    margin-bottom: 12px;
+
+    padding-left: 4px;
+
+}
+
+
+.hourly-strip {
+
+    display: flex;
+
+    gap: 10px;
+
+    overflow-x: auto;
+
+    padding-bottom: 6px;
+
+    scrollbar-width: thin;
+
+}
+
+
+.hourly-strip::-webkit-scrollbar {
+
+    height: 5px;
+
+}
+
+
+.hourly-strip::-webkit-scrollbar-thumb {
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border-radius: 10px;
+
+}
+
+
+.hourly-item {
+
+    flex: 0 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 14px 12px;
+
+    min-width: 64px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: var(--surface);
+
+}
+
+
+.hourly-item.now {
+
+    border-color: rgba(168, 85, 247, 0.5);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(124, 58, 237, 0.18),
+            rgba(217, 70, 239, 0.08)
+        );
+
+}
+
+
+.hourly-time {
+
+    font-size: 0.72rem;
+
+    color: var(--text-muted);
+
+    font-family: var(--font-mono);
+
+}
+
+
+.hourly-icon {
+
+    font-size: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent-violet),
+            var(--accent-magenta)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+}
+
+
+.hourly-temp {
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
 
 }
 
@@ -773,6 +1125,24 @@ main {
 
         grid-template-columns: 1fr;
 
+    }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .weather-icon::before {
+        animation: none;
+    }
+
+    .blob {
+        transition: none;
+    }
+
+    .empty-icon-main,
+    .empty-icon-orbit {
+        animation: none;
     }
 
 }

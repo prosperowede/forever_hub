@@ -75,6 +75,8 @@
 
         </div>
 
+        <span class="quick-label" id="quickLabel">Popular</span>
+
         <div class="quick-cities" id="quickCities">
             <button data-city="Lagos">Lagos</button>
             <button data-city="London">London</button>
@@ -135,6 +137,7 @@
 
         <p class="weather-condition" id="conditionText">--</p>
         <p class="weather-feelslike">Feels like <span id="feelsLikeValue">--°</span></p>
+        <p class="weather-context" id="contextLine"></p>
 
         <div class="weather-details">
 
@@ -171,6 +174,18 @@
             </div>
 
         </div>
+
+    </section>
+
+    <!-- ============================
+         HOURLY FORECAST
+    ============================ -->
+
+    <section class="hourly-section" id="hourlySection" style="display:none;">
+
+        <h3 class="hourly-title">Next hours</h3>
+
+        <div class="hourly-strip" id="hourlyStrip"></div>
 
     </section>
 

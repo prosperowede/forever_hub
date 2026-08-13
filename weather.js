@@ -5,6 +5,10 @@
 const GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search";
 const FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 
+const DEFAULT_CITIES = ["Lagos", "London", "New York", "Dubai", "Tokyo"];
+
+const RECENTS_KEY = "forever_weather_recents";
+
 // WMO weather codes -> { text, icon, day/night variants }
 const WEATHER_CODES = {
 
@@ -94,21 +98,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // -------------------------------------------------
-    // QUICK CITY CHIPS
+    // QUICK CITY CHIPS (recent searches, or popular defaults)
     // -------------------------------------------------
+
+    renderQuickCities();
 
     quickCities.addEventListener('click', function (e) {
 
-        const btn = e.target.closest('button[data-city]');
+        const btn = e.target.closest('button');
 
         if (!btn) return;
 
         quickCities.querySelectorAll('button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        citySearch.value = btn.dataset.city;
+        citySearch.value = btn.dataset.name || btn.dataset.city;
 
-        runGeocodeSearch(btn.dataset.city, true);
+        if (btn.dataset.lat && btn.dataset.lon) {
+
+            // A stored recent — go straight to weather, no geocode call needed.
+            loadWeather(
+                parseFloat(btn.dataset.lat),
+                parseFloat(btn.dataset.lon),
+                btn.dataset.name,
+                btn.dataset.meta || ""
+            );
+
+        } else {
+
+            runGeocodeSearch(btn.dataset.city, true);
+
+        }
 
     });
 
@@ -265,12 +285,105 @@ function selectLocation(result) {
 
     quickCities.querySelectorAll('button').forEach(b => b.classList.remove('active'));
 
+    const meta = [result.admin1, result.country].filter(Boolean).join(", ");
+
+    saveRecent({
+        name: result.name,
+        meta: meta,
+        latitude: result.latitude,
+        longitude: result.longitude
+    });
+
+    renderQuickCities();
+
     loadWeather(
         result.latitude,
         result.longitude,
         result.name,
-        [result.admin1, result.country].filter(Boolean).join(", ")
+        meta
     );
+
+}
+
+
+// =====================================================
+// RECENT SEARCHES
+// =====================================================
+
+function getRecents() {
+
+    try {
+
+        const raw = localStorage.getItem(RECENTS_KEY);
+
+        return raw ? JSON.parse(raw) : [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveRecent(location) {
+
+    try {
+
+        let recents = getRecents();
+
+        // Remove any existing entry for the same place, then add to front.
+        recents = recents.filter(r =>
+            !(r.name === location.name && r.meta === location.meta)
+        );
+
+        recents.unshift(location);
+
+        recents = recents.slice(0, 5);
+
+        localStorage.setItem(RECENTS_KEY, JSON.stringify(recents));
+
+    } catch (error) {
+
+        // localStorage unavailable (private browsing etc.) — fail silently,
+        // recents just won't persist.
+        console.warn("Couldn't save recent search:", error);
+
+    }
+
+}
+
+
+function renderQuickCities() {
+
+    const quickCities = document.getElementById('quickCities');
+    const quickLabel = document.getElementById('quickLabel');
+
+    const recents = getRecents();
+
+    if (recents.length > 0) {
+
+        quickLabel.textContent = "Recent";
+
+        quickCities.innerHTML = recents.map(r => `
+            <button
+                data-name="${escapeHTML(r.name)}"
+                data-meta="${escapeHTML(r.meta || "")}"
+                data-lat="${r.latitude}"
+                data-lon="${r.longitude}"
+            >${escapeHTML(r.name)}</button>
+        `).join('');
+
+    } else {
+
+        quickLabel.textContent = "Popular";
+
+        quickCities.innerHTML = DEFAULT_CITIES.map(city => `
+            <button data-city="${escapeHTML(city)}">${escapeHTML(city)}</button>
+        `).join('');
+
+    }
 
 }
 
@@ -298,6 +411,14 @@ async function loadWeather(lat, lon, cityName, countryLabel) {
                 "wind_speed_10m",
                 "is_day"
             ].join(","),
+
+            hourly: [
+                "temperature_2m",
+                "weather_code",
+                "is_day"
+            ].join(","),
+
+            forecast_days: 2,
 
             timezone: "auto"
 
@@ -368,9 +489,189 @@ function renderWeather(data, cityName, countryLabel) {
     document.getElementById('dayNightIcon').className =
         `fa-solid ${dayNightIconClass}`;
 
+    applyWeatherTheme(current.weather_code, isDay);
+
+    document.getElementById('contextLine').textContent =
+        getContextLine(current.weather_code, current.temperature_2m, isDay);
+
+    renderHourlyStrip(data.hourly, data.current.time);
+
     startClock(data.utc_offset_seconds);
 
     showCard();
+
+}
+
+
+// =====================================================
+// REACTIVE BACKGROUND THEME
+// =====================================================
+
+function applyWeatherTheme(weatherCode, isDay) {
+
+    const root = document.documentElement;
+
+    let blob1 = "#5b4b8a";
+    let blob2 = "#7a4a6e";
+
+    if (!isDay) {
+
+        // Night — muted slate indigo, regardless of condition.
+        blob1 = "#453a63";
+        blob2 = "#5b4b8a";
+
+    } else if (weatherCode === 0 || weatherCode === 1) {
+
+        // Clear / mainly clear — muted warm glow.
+        blob1 = "#8a6d4f";
+        blob2 = "#7a4a6e";
+
+    } else if (weatherCode === 2 || weatherCode === 3) {
+
+        // Cloudy / overcast — muted cool slate.
+        blob1 = "#54525f";
+        blob2 = "#5b4b8a";
+
+    } else if (weatherCode === 45 || weatherCode === 48) {
+
+        // Fog.
+        blob1 = "#5c5b62";
+        blob2 = "#4a4950";
+
+    } else if ([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(weatherCode)) {
+
+        // Rain.
+        blob1 = "#3a4a63";
+        blob2 = "#2a3a52";
+
+    } else if ([71,73,75,77,85,86].includes(weatherCode)) {
+
+        // Snow.
+        blob1 = "#5b6a80";
+        blob2 = "#6a7594";
+
+    } else if ([95,96,99].includes(weatherCode)) {
+
+        // Thunderstorm.
+        blob1 = "#5b4b8a";
+        blob2 = "#5c3a3a";
+
+    }
+
+    root.style.setProperty("--dyn-blob1", blob1);
+    root.style.setProperty("--dyn-blob2", blob2);
+
+    document.querySelector(".blob1").style.background = blob1;
+    document.querySelector(".blob2").style.background = blob2;
+
+}
+
+
+// =====================================================
+// CONTEXTUAL LINE
+// =====================================================
+
+function getContextLine(weatherCode, temp, isDay) {
+
+    if ([95,96,99].includes(weatherCode)) {
+        return "Storms rolling through — best to stay indoors.";
+    }
+
+    if ([65,82,67].includes(weatherCode)) {
+        return "Heavy rain out there — grab an umbrella if you're heading out.";
+    }
+
+    if ([51,53,55,56,57,61,63,66,80,81].includes(weatherCode)) {
+        return "A little rain about — an umbrella wouldn't hurt.";
+    }
+
+    if ([71,73,75,77,85,86].includes(weatherCode)) {
+        return "Snowy conditions — drive and walk carefully.";
+    }
+
+    if (weatherCode === 45 || weatherCode === 48) {
+        return "Foggy out there — visibility may be low.";
+    }
+
+    if (temp >= 33) {
+        return "Quite hot today — stay hydrated.";
+    }
+
+    if (temp <= 10) {
+        return "Chilly out there — bundle up.";
+    }
+
+    if (weatherCode === 0 || weatherCode === 1) {
+        return isDay
+            ? "Clear skies — a great day to be outside."
+            : "Clear night skies — good weather for a walk.";
+    }
+
+    if (weatherCode === 2 || weatherCode === 3) {
+        return "A calm, overcast kind of day.";
+    }
+
+    return "Looking like a fairly ordinary day out there.";
+
+}
+
+
+// =====================================================
+// HOURLY FORECAST STRIP
+// =====================================================
+
+function renderHourlyStrip(hourly, currentTimeISO) {
+
+    const hourlySection = document.getElementById('hourlySection');
+    const hourlyStrip = document.getElementById('hourlyStrip');
+
+    if (!hourly || !hourly.time) {
+        hourlySection.style.display = 'none';
+        return;
+    }
+
+    const currentIndex = hourly.time.indexOf(currentTimeISO);
+
+    const startIndex = currentIndex === -1 ? 0 : currentIndex;
+
+    const slice = hourly.time.slice(startIndex, startIndex + 12);
+
+    hourlyStrip.innerHTML = slice.map((timeStr, i) => {
+
+        const index = startIndex + i;
+
+        const code = hourly.weather_code[index];
+        const temp = Math.round(hourly.temperature_2m[index]);
+        const hourIsDay = hourly.is_day[index] === 1;
+
+        const info = WEATHER_CODES[code] || { icon: "fa-cloud", night: "fa-cloud" };
+
+        const iconClass = hourIsDay ? info.icon : info.night;
+
+        // Open-Meteo's hourly.time strings (with timezone=auto) are
+        // already in the searched location's local time, formatted
+        // like "2026-08-13T14:00". Parse the hour directly instead of
+        // building a Date object, which would reinterpret it using the
+        // browser's own timezone and show the wrong hour.
+        const hourPart = timeStr.split("T")[1];
+        const hour24 = parseInt(hourPart.split(":")[0], 10);
+
+        const ampm = hour24 < 12 ? "AM" : "PM";
+        const displayHour = hour24 % 12 === 0 ? 12 : hour24 % 12;
+
+        const label = i === 0 ? "Now" : `${displayHour}${ampm}`;
+
+        return `
+            <div class="hourly-item ${i === 0 ? 'now' : ''}">
+                <span class="hourly-time">${label}</span>
+                <i class="fa-solid ${iconClass} hourly-icon"></i>
+                <span class="hourly-temp">${temp}°</span>
+            </div>
+        `;
+
+    }).join('');
+
+    hourlySection.style.display = 'block';
 
 }
 
