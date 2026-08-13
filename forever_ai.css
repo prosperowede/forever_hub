@@ -6,6 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 
 :root {
@@ -997,58 +998,692 @@ body {
 
 .message-text a {
     color: var(--accent-three);
+
+    text-decoration: underline;
+
+    text-underline-offset: 2px;
+}
+
+
+.message-text a:hover {
+    color: var(--accent-two);
+}
+
+
+.message-text blockquote {
+    margin: 0 0 12px;
+
+    padding: 8px 14px;
+
+    border-left: 3px solid var(--accent-one);
+    border-radius: 4px;
+
+    background: rgba(139, 92, 246, 0.06);
+
+    color: var(--text-secondary);
+}
+
+
+.message-text blockquote p {
+    margin: 0;
+}
+
+
+.message-text code {
+    padding: 2px 6px;
+
+    border-radius: 5px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: #e4b8ff;
+
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+    font-size: 12.5px;
+}
+
+
+.message-text pre {
+    margin: 0 0 12px;
+
+    padding: 14px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    overflow-x: auto;
+}
+
+
+.message-text pre code {
+    padding: 0;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #d9dce8;
+
+    font-size: 12.5px;
+
+    line-height: 1.6;
+}
+
+
+.message-text hr {
+    margin: 16px 0;
+
+    border: none;
+    border-top: 1px solid var(--border);
+}
+
+
+.message-text table {
+    width: 100%;
+    margin: 0 0 12px;
+
+    border-collapse: collapse;
+
+    font-size: 13px;
+}
+
+
+.message-text th,
+.message-text td {
+    padding: 8px 10px;
+
+    border: 1px solid var(--border);
+
+    text-align: left;
+}
+
+
+.message-text th {
+    background: rgba(255, 255, 255, 0.04);
+
+    color: var(--text-main);
 }
 
 
 /* =====================================================
-   END OF FILE
-   Added composer visibility fixes below
+   STREAMING CURSOR
 ===================================================== */
 
-/* Keep composer visible and leave a small gap from the page bottom */
-:root {
-  /* adjust this to match the full composer height (height + vertical padding + border) */
-  --composer-height: 92px;
-  --composer-gap: 14px; /* visible space between composer and bottom of page */
+.cursor-blink {
+    display: inline-block;
+
+    width: 2px;
+    height: 15px;
+
+    margin-left: 2px;
+
+    background: var(--accent-three);
+
+    vertical-align: text-bottom;
+
+    animation: cursorBlink 0.9s step-start infinite;
 }
 
-/* Reserve space so last messages don't get hidden behind the composer */
-.chat-container,
-.messages {
-  padding-bottom: calc(var(--composer-height) + var(--composer-gap));
-  scroll-padding-bottom: calc(var(--composer-height) + var(--composer-gap)); /* helps focus/anchor behavior on mobile */
+
+@keyframes cursorBlink {
+
+    50% {
+        opacity: 0;
+    }
+
 }
 
-/* Target common composer selector names — update to the real selector if different */
-.message-composer,
-.composer,
-#composer {
-  position: sticky;
-  bottom: var(--composer-gap);
-  left: 0;
-  width: 100%;
-  z-index: 50;
-  flex-shrink: 0;
 
-  /* visual / spacing — adjust to suit design */
-  background: rgba(7, 8, 18, 0.6);
-  border-top: 1px solid var(--border);
-  padding: 14px 25px;
-  border-radius: 12px;
-  margin: 0 auto;
-  max-width: 100%;
-  box-shadow: 0 8px 22px rgba(2, 6, 23, 0.5);
+.message-actions {
+    display: flex;
+
+    gap: 5px;
+
+    margin-top: 10px;
 }
 
-/* Make the composer slightly more compact on small screens */
-@media (max-height: 640px), (max-width: 520px) {
-  :root {
-    --composer-height: 78px;
-    --composer-gap: 10px;
-  }
-  .message-composer,
-  .composer,
-  #composer {
-    padding: 10px 16px;
-  }
+
+.message-actions button {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid transparent;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+
+.message-actions button:hover {
+    color: var(--text-main);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border-color: var(--border);
+}
+
+
+/* =====================================================
+   USER MESSAGE
+===================================================== */
+
+.message.user-message {
+    justify-content: flex-end;
+}
+
+
+.user-message .message-body {
+    flex: 0 1 auto;
+    max-width: 75%;
+
+    padding: 12px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 17px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+
+.user-message .message-header {
+    justify-content: flex-end;
+}
+
+
+.user-message .message-text {
+    color: #eef0f8;
+}
+
+
+/* =====================================================
+   AI THINKING ANIMATION
+===================================================== */
+
+.ai-thinking {
+    display: none;
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 10px 0 30px 51px;
+
+    opacity: 0.9;
+}
+
+
+.thinking-orb {
+    width: 36px;
+    height: 36px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.thinking-orb::before {
+    content: "";
+
+    position: absolute;
+
+    width: 29px;
+    height: 29px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(192, 132, 252, 0.9),
+            rgba(99, 102, 241, 0.15),
+            transparent 70%
+        );
+
+    animation: thinkingPulse 1.8s ease-in-out infinite;
+}
+
+
+.thinking-orb span {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: var(--accent-three);
+
+    box-shadow:
+        0 0 10px rgba(192, 132, 252, 0.8);
+
+    animation: thinkingFloat 1.4s ease-in-out infinite;
+}
+
+
+.thinking-orb span:nth-child(1) {
+    transform: translateX(-9px);
+
+    animation-delay: 0s;
+}
+
+
+.thinking-orb span:nth-child(2) {
+    transform: translateY(-7px);
+
+    animation-delay: 0.2s;
+}
+
+
+.thinking-orb span:nth-child(3) {
+    transform: translateX(9px);
+
+    animation-delay: 0.4s;
+}
+
+
+.thinking-text {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 12px;
+}
+
+
+.thinking-text strong {
+    background:
+        linear-gradient(
+            90deg,
+            #c084fc,
+            #818cf8,
+            #c084fc
+        );
+
+    background-size: 200% auto;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: gradientMove 2s linear infinite;
+}
+
+
+.thinking-text span {
+    color: var(--text-muted);
+}
+
+
+/* =====================================================
+   COMPOSER
+===================================================== */
+
+.composer-wrapper {
+    width: min(850px, 100%);
+
+    margin: 0 auto;
+
+    padding: 10px 25px 18px;
+}
+
+
+.composer {
+    min-height: 58px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 8px;
+
+    padding: 8px 9px 8px 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+
+    border-radius: 18px;
+
+    background:
+        rgba(18, 19, 35, 0.88);
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    transition: var(--transition);
+}
+
+
+.composer:focus-within {
+    border-color: rgba(168, 85, 247, 0.4);
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(139, 92, 246, 0.08);
+}
+
+
+.composer textarea {
+    flex: 1;
+
+    min-height: 40px;
+    max-height: 160px;
+
+    padding: 10px 3px;
+
+    resize: none;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text-main);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 20px;
+}
+
+
+.composer textarea::placeholder {
+    color: var(--text-muted);
+}
+
+
+.composer-btn {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+
+.composer-btn:hover {
+    color: var(--text-main);
+
+    background: rgba(255, 255, 255, 0.06);
+}
+
+
+.send-btn {
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent-one),
+            var(--accent-two)
+        );
+
+    color: white;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 18px rgba(99, 102, 241, 0.25);
+
+    transition: var(--transition);
+}
+
+
+.send-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+
+    box-shadow:
+        0 7px 24px rgba(139, 92, 246, 0.35);
+}
+
+
+.composer-note {
+    padding-top: 8px;
+    padding-bottom: 40px;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   SIDEBAR OVERLAY
+===================================================== */
+
+.sidebar-overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    backdrop-filter: blur(3px);
+
+    z-index: 90;
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes logoFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+
+@keyframes orbitSpin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+@keyframes thinkingPulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: scale(1.25);
+
+        opacity: 1;
+    }
+}
+
+
+@keyframes thinkingFloat {
+
+    0%,
+    100% {
+        opacity: 0.35;
+
+        transform: translateY(4px);
+    }
+
+    50% {
+        opacity: 1;
+
+        transform: translateY(-5px);
+    }
+}
+
+
+@keyframes gradientMove {
+
+    to {
+        background-position: 200% center;
+    }
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 850px) {
+
+    :root {
+        --sidebar-width: 245px;
+    }
+
+    .suggestion-grid {
+        width: 100%;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    body {
+        overflow: hidden;
+    }
+
+
+    .sidebar {
+        position: fixed;
+
+        left: 0;
+        top: 0;
+
+        transform: translateX(-100%);
+
+        transition: transform 0.3s ease;
+
+        box-shadow:
+            15px 0 40px rgba(0, 0, 0, 0.4);
+    }
+
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+
+    .top-bar {
+        padding: 0 14px;
+    }
+
+
+    .current-chat strong {
+        font-size: 12px;
+    }
+
+
+    .top-actions .top-action-btn[title="More"] {
+        display: none;
+    }
+
+
+    .welcome-screen {
+        padding: 40px 16px;
+    }
+
+
+    .welcome-screen h1 {
+        font-size: clamp(24px, 7vw, 32px);
+    }
+
+
+    .suggestion-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .messages {
+        padding: 24px 14px 20px;
+    }
+
+
+    .message {
+        gap: 10px;
+    }
+
+
+    .ai-thinking {
+        margin-left: 40px;
+    }
+
+
+    .composer-wrapper {
+        padding: 8px 12px 14px;
+    }
+
 }
